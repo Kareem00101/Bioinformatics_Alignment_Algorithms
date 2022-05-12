@@ -1,0 +1,44 @@
+.navbar-brand{
+    margin: auto;
+    font-size: 30px;
+}
+
+.form1{
+    margin: 3% auto 0;
+    padding: 3% 1%;
+    border-radius: 2%;
+    background-color: rgb(0, 0, 0, 0.6);
+    width: fit-content;
+}
+
+hr{
+    background-color: transparent;
+    border-bottom: 6px dotted white;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+}
+
+#s-h{
+    display: none;
+}
+
+.open{
+    margin-right: 2%;
+}
+
+table{
+    background-color: white;
+    border: 5px solid white;
+    margin: 2% 0 8%;
+    padding: auto;
+}
+
+.cellh{
+border-right: 2px solid black;
+}
+
+.cell{
+    visibility: hidden;
+}
+
