@@ -1,5 +1,7 @@
+from ctypes import alignment
 from flask import Flask, render_template, redirect, request
 from flask_cors import CORS
+from main import needleman_wunsch, needleman_wunsch_list_of_trace_back_strings, smith_waterman, smith_waterman_list_of_trace_back_strings
 # import bio algorithms here
 
 
@@ -28,23 +30,55 @@ def setup_post():
     algoType=request.form.get('algoType')
 
     # check algo then call algo func here 
-    global l1
-    l1=[[0,0,0,0,0,0,0,0,0],
-        [0,5,0,0,5,0,0,5,0],
-        [0,5,3,0,5,3,0,5,3],
-        [0,0,3,8,2,10,4,0,3],
-        [0,0,0,2,6,4,8,2,5],
-        [0,5,0,0,7,4,2,13,7],
-        [0,0,3,0,1,5,2,7,18]]
+    # global l1
+    # l1=[[0,0,0,0,0,0,0,0,0],
+    #     [0,5,0,0,5,0,0,5,0],
+    #     [0,5,3,0,5,3,0,5,3],
+    #     [0,0,3,8,2,10,4,0,3],
+    #     [0,0,0,2,6,4,8,2,5],
+    #     [0,5,0,0,7,4,2,13,7]]
 
-    print(algoType,gap,mismatch,match,s2,s1)
+    global outputMatrix,outputIndices
+    global xx
+    xx=[]
+    tracebackString=''
+
+    if algoType == "NW":
+        outputMatrix, outputIndices=needleman_wunsch(s2,s1,match,mismatch,gap)
+        tracebackString=needleman_wunsch_list_of_trace_back_strings
+
+    elif algoType== "SW":
+        outputMatrix, outputIndices=smith_waterman(s2,s1,match,mismatch,gap)
+        tracebackString=smith_waterman_list_of_trace_back_strings
+
+
+    print('this is test: ', outputMatrix)
+
+    for i in range(0,int(len(tracebackString)),2):
+        ltest=[]
+        for a in range(0,2):
+
+            ltest.append(tracebackString[a+i])
+            if a%2 !=0:
+                break
+
+        xx.append(ltest)
+  
+
+    
+
+
+    print(algoType,gap,mismatch,match,s2,s1,outputMatrix.tolist(),outputIndices.tolist(),xx )
 
     return redirect('/algo')
 
 @app.route("/algo" )
 def algo_get():
 
-    return render_template('home.html',s1=s1, s2=s2, match=match, mismatch=mismatch, gap=gap, algoType=algoType,l1=l1)
+    # row and coloumn which is larger
+
+    return render_template('home.html',s1=s1, s2=s2, match=match, mismatch=mismatch, gap=gap, algoType=algoType,\
+                            l1=outputMatrix.tolist(), i1=outputIndices.tolist(),alignment=xx)
 
      
 

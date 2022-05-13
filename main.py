@@ -8,12 +8,12 @@ needleman_wunsch_list_of_trace_back_strings = []
 smith_waterman_list_of_trace_back_strings = []
 
 # Needleman-Wunsch Algorithm
-def needleman_wunsch(str_one, str_two):
+def needleman_wunsch(str_one, str_two, match, mismatch, gap):
     
     # To Do: User Input Score & Penalties
-    gap_penalty = -1
-    mis_match_score=-1
-    match_score=2
+    gap_penalty = int (gap)
+    mis_match_score= int(mismatch)
+    match_score= int(match)
     
     # Initializing A Zero Matrix
     str_one_len = len(str_one)
@@ -93,14 +93,14 @@ def trace_back_functionality_nw(trace_back_table, trace_back_indices,str_one, st
             j_index = j_index-1
         elif trace_back_table[i_index][j_index] == 2:
             trace_back_indices[i_index][j_index] = 1
-            sequence_one_result+="-"
+            sequence_one_result+="#"
             sequence_two_result+=str_two[j_index-1]
             i_index = i_index
             j_index = j_index-1
         elif trace_back_table[i_index][j_index] == 3:
             trace_back_indices[i_index][j_index] = 1
             sequence_one_result+=str_one[i_index-1]
-            sequence_two_result+="-"
+            sequence_two_result+="#"
             i_index = i_index-1
             j_index = j_index
         elif trace_back_table[i_index][j_index] == -12:
@@ -111,7 +111,7 @@ def trace_back_functionality_nw(trace_back_table, trace_back_indices,str_one, st
             sequence_two_to_send += str_two[j_index-1]
             trace_back_indices=trace_back_functionality_nw(trace_back_table, trace_back_indices, str_one, str_two, i_index-1, j_index-1, sequence_one_to_send, sequence_two_to_send)
             sequence_one_to_send = sequence_one_result
-            sequence_one_to_send +="-"
+            sequence_one_to_send +="#"
             sequence_two_to_send = sequence_two_result
             sequence_two_to_send += str_two[j_index-1]
             trace_back_indices=trace_back_functionality_nw(trace_back_table, trace_back_indices, str_one, str_two, i_index, j_index-1, sequence_one_to_send, sequence_two_to_send)
@@ -126,20 +126,20 @@ def trace_back_functionality_nw(trace_back_table, trace_back_indices,str_one, st
             sequence_one_to_send = sequence_one_result
             sequence_one_to_send += str_one[i_index-1]
             sequence_two_to_send = sequence_two_result
-            sequence_two_to_send += "-"
+            sequence_two_to_send += "#"
             trace_back_indices=trace_back_functionality_nw(trace_back_table, trace_back_indices, str_one, str_two, i_index-1, j_index, sequence_one_to_send, sequence_two_to_send)
             break
         elif trace_back_table[i_index][j_index] == 23:
             trace_back_indices[i_index][j_index] = 1
             sequence_one_to_send = sequence_one_result
-            sequence_one_to_send +="-"
+            sequence_one_to_send +="#"
             sequence_two_to_send = sequence_two_result
             sequence_two_to_send += str_two[j_index-1]
             trace_back_indices=trace_back_functionality_nw(trace_back_table, trace_back_indices, str_one, str_two, i_index, j_index-1, sequence_one_to_send, sequence_two_to_send)
             sequence_one_to_send = sequence_one_result
             sequence_one_to_send += str_one[i_index-1]
             sequence_two_to_send = sequence_two_result
-            sequence_two_to_send += "-"
+            sequence_two_to_send += "#"
             trace_back_indices=trace_back_functionality_nw(trace_back_table, trace_back_indices, str_one, str_two, i_index-1, j_index, sequence_one_to_send, sequence_two_to_send)
             break
         else:
@@ -153,12 +153,12 @@ def trace_back_functionality_nw(trace_back_table, trace_back_indices,str_one, st
 
 
 # Smith & Waterman Algorithm
-def smith_waterman(str_one, str_two):
+def smith_waterman(str_one, str_two, match, mismatch, gap):
     
     # To Do: User Input Score & Penalties
-    gap_penalty = -1
-    mis_match_score=-1
-    match_score=1
+    gap_penalty = int (gap)
+    mis_match_score= int(mismatch)
+    match_score= int(match)
     
     # Initializing A Zero Matrix
     str_one_len = len(str_one)
@@ -226,14 +226,14 @@ def trace_back_functionality_sw(trace_back_table, trace_back_indices, str_one, s
             j_index = j_index-1
         elif trace_back_table[i_index][j_index] == 2:
             trace_back_indices[i_index][j_index] = 1
-            sequence_one_result+="-"
+            sequence_one_result+="#"
             sequence_two_result+=str_two[j_index-1]
             i_index = i_index
             j_index = j_index-1
         elif trace_back_table[i_index][j_index] == 3:
             trace_back_indices[i_index][j_index] = 1
             sequence_one_result+=str_one[i_index-1]
-            sequence_two_result+="-"
+            sequence_two_result+="#"
             i_index = i_index-1
             j_index = j_index
         elif trace_back_table[i_index][j_index] == 12:
@@ -244,7 +244,7 @@ def trace_back_functionality_sw(trace_back_table, trace_back_indices, str_one, s
             sequence_two_to_send += str_two[j_index-1]
             trace_back_indices=trace_back_functionality_sw(trace_back_table, trace_back_indices, str_one, str_two, i_index-1, j_index-1, sequence_one_to_send, sequence_two_to_send)
             sequence_one_to_send = sequence_one_result
-            sequence_one_to_send +="-"
+            sequence_one_to_send +="#"
             sequence_two_to_send = sequence_two_result
             sequence_two_to_send += str_two[j_index-1]
             trace_back_indices=trace_back_functionality_sw(trace_back_table, trace_back_indices, str_one, str_two, i_index, j_index-1, sequence_one_to_send, sequence_two_to_send)
@@ -259,20 +259,20 @@ def trace_back_functionality_sw(trace_back_table, trace_back_indices, str_one, s
             sequence_one_to_send = sequence_one_result
             sequence_one_to_send += str_one[i_index-1]
             sequence_two_to_send = sequence_two_result
-            sequence_two_to_send += "-"
+            sequence_two_to_send += "#"
             trace_back_indices=trace_back_functionality_sw(trace_back_table, trace_back_indices, str_one, str_two, i_index-1, j_index, sequence_one_to_send, sequence_two_to_send)
             break
         elif trace_back_table[i_index][j_index] == 23:
             trace_back_indices[i_index][j_index] = 1
             sequence_one_to_send = sequence_one_result
-            sequence_one_to_send +="-"
+            sequence_one_to_send +="#"
             sequence_two_to_send = sequence_two_result
             sequence_two_to_send += str_two[j_index-1]
             trace_back_indices=trace_back_functionality_sw(trace_back_table, trace_back_indices, str_one, str_two, i_index, j_index-1, sequence_one_to_send, sequence_two_to_send)
             sequence_one_to_send = sequence_one_result
             sequence_one_to_send += str_one[i_index-1]
             sequence_two_to_send = sequence_two_result
-            sequence_two_to_send += "-"
+            sequence_two_to_send += "#"
             trace_back_indices=trace_back_functionality_sw(trace_back_table, trace_back_indices, str_one, str_two, i_index-1, j_index, sequence_one_to_send, sequence_two_to_send)
             break
         else:
@@ -290,7 +290,8 @@ def trace_back_functionality_sw(trace_back_table, trace_back_indices, str_one, s
 
 
 
-x,y=needleman_wunsch("CATGT","ACGCTG")
-x,y = smith_waterman("GCGATATA","AACCTATAGCT")
-print(needleman_wunsch_list_of_trace_back_strings)
-print(smith_waterman_list_of_trace_back_strings)
+# x,y=needleman_wunsch("CATGT","ACGCTG", 2, -1, -1)
+# x,y = smith_waterman("GCGATATA","AACCTATAGCT",1,-1,-1)
+# print(x,y)
+# print(needleman_wunsch_list_of_trace_back_strings)
+# print(smith_waterman_list_of_trace_back_strings)

@@ -57,39 +57,107 @@
 
         {%if l1%}
         <div class="col-lg-6">
+            <!-- hererer -->
+            <div id="alignment">
+                <div class="row">
+                    {%for i in range(alignment|length)%}
+                        <div class="col">
+                            <p class="alignmentP">{{alignment[i][0]}} </p>
+                            <p class="alignmentP">{{alignment[i][1]}}</p>
+                        </div>
+                    {%endfor%}
+                </div>
+            </div>
 
-            <table class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th class="cellh">#</th>
-                    <th>0</th>
-                    {%for i in s1%}
-                        <th scope="col">{{i}}</th>
-                    {% endfor%}
-                  </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th class="cellh">0</th>
-                        {%for i in range((s1|length +1))%}
-                            <td> <span id=c{{0}}{{i}} class="cell">{{l1[0][i]}}</span> </td>
-                        {%endfor%}
-                    </tr>
-                    {%for d in range((s2|length)) %}
+            <div id="withoutTrace">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th class="cellh">#</th>
+                        <th>0</th>
+                        {%for i in s1%}
+                            <th scope="col">{{i}}</th>
+                        {% endfor%}
+                      </tr>
+                    </thead>
+                    <tbody>
                         <tr>
-                            <th scope="row" class="cellh">{{s2[d]}}</th>
+                            <th class="cellh">0</th>
                             {%for i in range((s1|length +1))%}
-                                <td>
-                                    <span id=c{{d+1}}{{i}} class="cell">{{l1[d+1][i]}}</span>
+                                <td> 
+                                    <span id=c{{0}}{{i}} class="cell">{{l1[0][i]}} </span> 
                                 </td>
                             {%endfor%}
                         </tr>
-                    {%endfor%}
-                </tbody>
-            </table>
+                        {%for d in range((s2|length)) %}
+                            
+                            <div>
+                                <tr>
+                                    <th scope="row" class="cellh">{{s2[d]}}</th>
+                                    {%for i in range((s1|length +1))%}
+                                            <td>
+                                                <span id=c{{d+1}}{{i}} class="cell">{{l1[d+1][i]}} </span>
+                                            </td>
+                                    {%endfor%}
+                                </tr>
+    
+                            </div>
+                            
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="withTrace">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th class="cellh">#</th>
+                        <th>0</th>
+                        {%for i in s1%}
+                            <th scope="col">{{i}}</th>
+                        {% endfor%}
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="cellh">0</th>
+                            {%for i in range((s1|length +1))%}
+                                {%if i1[0][i] == 1 %}
+                                    <td>
+                                        <span id=c{{0}}{{i}} class="cellC">{{l1[0][i]}} </span>
+                                    </td>
+                                {%else%}
+                                    <td>
+                                        <span id=c{{0}}{{i}} class="">{{l1[0][i]}} </span>
+                                    </td>
+                                {%endif%}
+                            {%endfor%}
+                        </tr>
+                        {%for d in range((s2|length)) %}
+                            <tr>
+                                <th scope="row" class="cellh">{{s2[d]}}</th>
+                                {%for i in range((s1|length +1))%}
+                                    {%if i1[d+1][i] == 1 %}
+                                        <td>
+                                            <span id=c{{d+1}}{{i}} class="cellC">{{l1[d+1][i]}} </span>
+                                        </td>
+                                    {%else%}
+                                        <td>
+                                            <span id=c{{d+1}}{{i}} class="">{{l1[d+1][i]}} </span>
+                                        </td>
+                                    {%endif%}
+                                {%endfor%}
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
 
             <button type="button" id="hide" class="btn btn-primary btn-lg" value={{l1|length}}>privious cell</button>
             <button type="button" id="show" class="btn btn-primary btn-lg" value={{l1[0]|length}}>next cell</button>
+            <button type="button" id="traceBack" class="btn btn-primary btn-lg" onclick="showHideTrace()" >trace back</button>
+
 
         </div>
         {%endif%}
@@ -120,31 +188,49 @@
     var rowTemp=0
     var colValue =document.getElementById('show').value 
     var colTemp=0
-
-
-
+    
+    
     document.querySelector('#show').addEventListener('click',()=>{
         console.log("here1", cell, colValue, rowValue)
+        
+        maxcol=colValue-1
+        maxrow= rowValue-1
+
+        if(cell== "#c" + maxrow + maxcol){
+            document.getElementById('traceBack').style.display= 'inline';
+            document.getElementById('alignment').style.display= 'inline';
+        }
 
         if(cell != "#c"+rowValue+colValue){
+
             document.querySelector(cell).style.visibility="visible";
             col ++;
             colTemp++;
+
             if (colTemp == colValue)
             {
                 row++;
                 colTemp=0;
                 col=0;
             }   
+        
             cell="#c" + row + col;
-
+            
             console.log(cell)
         }
+        
         
     });
 
     document.querySelector('#hide').addEventListener('click',()=>{
         console.log("here1", cell, colValue)
+
+
+        if(cell != "#c" + maxrow + maxcol){
+            console.log('entered')
+            document.getElementById('traceBack').style.display= 'none';
+            document.getElementById('alignment').style.display= 'none';
+        }
 
         if(cell == "#c00")
         {
@@ -163,9 +249,23 @@
             cell="#c" + row + col;
             document.querySelector(cell).style.visibility="hidden";
         }
+
+
         
         console.log(cell)
     });
+
+
+    function showHideTrace(){
+        if(document.getElementById("withTrace").style.display=="block"){
+            document.getElementById("withoutTrace").style.display="block";
+            document.getElementById("withTrace").style.display="none";
+        }else{
+            document.getElementById("withoutTrace").style.display="none";
+            document.getElementById("withTrace").style.display="block";
+        }
+    }
+    
     
 </script>
 
