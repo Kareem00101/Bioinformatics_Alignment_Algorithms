@@ -37,7 +37,7 @@
                 <hr>
                 <div class="input-group mb-3">
                     <label class="input-group-text" for="inputGroupSelect01">choose the algorithm</label>
-                    <select name="algoType" class="form-select" id="inputGroupSelect01" onchange="showHide()" >
+                    <select name="algoType" class="form-select" id="inputGroupSelect01" onchange="showHide()" value={{algoType}} >
                         <optgroup label="Global">
                           <option value="NW">Needleman-Wunsch</option>
                           <option value="AGP">Affine Gap Penalty </option>
@@ -84,9 +84,20 @@
                         <tr>
                             <th class="cellh">0</th>
                             {%for i in range((s1|length +1))%}
-                                <td> 
-                                    <span id=c{{0}}{{i}} class="cell">{{l1[0][i]}} </span> 
-                                </td>
+                                {%if flag == True%}
+                                    <td>
+                                        <span id=c{{0}}{{i}} class="cell"> 
+                                            {%for x in range(l1[0][0]|length) %}
+                                                {{l1[0][i][x]}} 
+                                                <br> 
+                                            {%endfor%}
+                                        </span>
+                                    </td>
+                                {%else%}
+                                    <td> 
+                                        <span id=c{{0}}{{i}} class="cell">{{l1[0][i]}} </span> 
+                                    </td>
+                                {%endif%}
                             {%endfor%}
                         </tr>
                         {%for d in range((s2|length)) %}
@@ -95,9 +106,22 @@
                                 <tr>
                                     <th scope="row" class="cellh">{{s2[d]}}</th>
                                     {%for i in range((s1|length +1))%}
+
+                                        {%if flag == True%}
                                             <td>
+                                                <span id=c{{d+1}}{{i}} class="cell"> 
+                                                    {%for x in range(l1[0][0]|length) %}
+                                                        {{l1[d+1][i][x]}} 
+                                                        <br> 
+                                                    {%endfor%}
+                                                </span>
+                                            </td>
+                                        {%else%}
+                                            <td> 
                                                 <span id=c{{d+1}}{{i}} class="cell">{{l1[d+1][i]}} </span>
                                             </td>
+                                        {%endif%}
+                                            
                                     {%endfor%}
                                 </tr>
     
@@ -123,29 +147,77 @@
                         <tr>
                             <th class="cellh">0</th>
                             {%for i in range((s1|length +1))%}
-                                {%if i1[0][i] == 1 %}
-                                    <td>
-                                        <span id=c{{0}}{{i}} class="cellC">{{l1[0][i]}} </span>
-                                    </td>
+                                {%if flag == True%}
+                                    {%if i1[0][i] != 0 %}
+                                        <td>
+                                            <span id=c{{0}}{{i}} class="cellC">
+                                                {%for x in range(l1[0][0]|length) %}
+                                                    {{l1[0][i][x]}} 
+                                                    <br> 
+                                                {%endfor%} 
+                                            </span>
+                                        </td>
+                                    {%else%}
+                                        <td>
+                                            <span id=c{{0}}{{i}} >
+                                                {%for x in range(l1[0][0]|length) %}
+                                                    {{l1[0][i][x]}} 
+                                                    <br> 
+                                                {%endfor%} 
+                                            </span>
+                                        </td>
+                                    {%endif%}
+                                    
                                 {%else%}
-                                    <td>
-                                        <span id=c{{0}}{{i}} class="">{{l1[0][i]}} </span>
-                                    </td>
+                                    {%if i1[0][i] != 0 %}
+                                    
+                                        <td>
+                                            <span id=c{{0}}{{i}} class="cellC">{{l1[0][i]}} </span>
+                                        </td>
+                                    {%else%}
+                                        <td>
+                                            <span id=c{{0}}{{i}} >{{l1[0][i]}} </span>
+                                        </td>
+                                    {%endif%}
                                 {%endif%}
+
+                                
                             {%endfor%}
                         </tr>
                         {%for d in range((s2|length)) %}
                             <tr>
                                 <th scope="row" class="cellh">{{s2[d]}}</th>
                                 {%for i in range((s1|length +1))%}
-                                    {%if i1[d+1][i] == 1 %}
-                                        <td>
-                                            <span id=c{{d+1}}{{i}} class="cellC">{{l1[d+1][i]}} </span>
-                                        </td>
+                                    {%if flag == True%}
+                                        {%if i1[d+1][i] != 0 %}
+                                            <td>
+                                                <span id=c{{d+1}}{{i}} class="cellC">
+                                                    {%for x in range(l1[0][0]|length) %}
+                                                        {{l1[d+1][i][x]}} 
+                                                        <br> 
+                                                    {%endfor%}
+                                                </span>
+                                            </td>
+                                        {%else%}
+                                            <td>
+                                                <span id=c{{d+1}}{{i}} >
+                                                    {%for x in range(l1[0][0]|length) %}
+                                                        {{l1[d+1][i][x]}} 
+                                                        <br> 
+                                                    {%endfor%}
+                                                </span>
+                                            </td>
+                                        {%endif%}
                                     {%else%}
-                                        <td>
-                                            <span id=c{{d+1}}{{i}} class="">{{l1[d+1][i]}} </span>
-                                        </td>
+                                        {%if i1[d+1][i] != 0 %}
+                                            <td>
+                                                <span id=c{{d+1}}{{i}} class="cellC">{{l1[d+1][i]}} </span>
+                                            </td>
+                                        {%else%}
+                                            <td>
+                                                <span id=c{{d+1}}{{i}} >{{l1[d+1][i]}} </span>
+                                            </td>
+                                        {%endif%}
                                     {%endif%}
                                 {%endfor%}
                             </tr>
@@ -154,7 +226,7 @@
                 </table>
             </div>
 
-            <button type="button" id="hide" class="btn btn-primary btn-lg" value={{l1|length}}>privious cell</button>
+            <button type="button" id="hide" class="btn btn-primary btn-lg" value={{l1|length}}>previous cell</button>
             <button type="button" id="show" class="btn btn-primary btn-lg" value={{l1[0]|length}}>next cell</button>
             <button type="button" id="traceBack" class="btn btn-primary btn-lg" onclick="showHideTrace()" >trace back</button>
 
@@ -198,7 +270,6 @@
 
         if(cell== "#c" + maxrow + maxcol){
             document.getElementById('traceBack').style.display= 'inline';
-            document.getElementById('alignment').style.display= 'inline';
         }
 
         if(cell != "#c"+rowValue+colValue){
@@ -229,7 +300,6 @@
         if(cell != "#c" + maxrow + maxcol){
             console.log('entered')
             document.getElementById('traceBack').style.display= 'none';
-            document.getElementById('alignment').style.display= 'none';
         }
 
         if(cell == "#c00")
@@ -260,9 +330,11 @@
         if(document.getElementById("withTrace").style.display=="block"){
             document.getElementById("withoutTrace").style.display="block";
             document.getElementById("withTrace").style.display="none";
+            document.getElementById('alignment').style.display= 'none';
         }else{
             document.getElementById("withoutTrace").style.display="none";
             document.getElementById("withTrace").style.display="block";
+            document.getElementById('alignment').style.display= 'inline';
         }
     }
     
